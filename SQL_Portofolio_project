@@ -1,0 +1,373 @@
+select * from CovidDeath;
+create table CovidDeath(
+code varchar(255),	
+    continent varchar(255)	,
+    country varchar(255)	,
+    date	varchar(255),
+    total_cases	float,
+    Population	  float,
+    new_cases	  float,
+    new_cases_smoothed   float,	
+    total_cases_per_million	float,
+    new_cases_per_million 	float,	
+    new_cases_smoothed_per_million		float,
+    total_deaths	float,
+    new_deaths 	float,
+    new_deaths_smoothed		float,
+    total_deaths_per_million		float,
+    new_deaths_per_million		float,
+    new_deaths_smoothed_per_million 	float,	
+    excess_mortality	  float,
+    excess_mortality_cumulative		float,
+    excess_mortality_cumulative_absolute	  	float,
+    excess_mortality_cumulative_per_million  	float,	
+    hosp_patients		float,
+    hosp_patients_per_million   	float,	
+    weekly_hosp_admissions		float,
+    weekly_hosp_admissions_per_million		float,
+    icu_patients	float,
+    icu_patients_per_million	 	float,
+    weekly_icu_admissions		float,
+    weekly_icu_admissions_per_million   	float
+);
+
+insert into CovidDeath(
+    code,	
+    continent,	
+    country,	
+    date,	
+    total_cases,	
+    Population,	
+    new_cases,	
+    new_cases_smoothed,	
+    total_cases_per_million,	
+    new_cases_per_million,	
+    new_cases_smoothed_per_million,	
+    total_deaths,	
+    new_deaths,
+    new_deaths_smoothed,	
+    total_deaths_per_million,	
+    new_deaths_per_million,	
+    new_deaths_smoothed_per_million,	
+    excess_mortality	,
+    excess_mortality_cumulative,	
+    excess_mortality_cumulative_absolute	,
+    excess_mortality_cumulative_per_million	,
+    hosp_patients	,
+    hosp_patients_per_million	,
+    weekly_hosp_admissions	,
+    weekly_hosp_admissions_per_million	,
+    icu_patients	,
+    icu_patients_per_million	,
+    weekly_icu_admissions	,
+    weekly_icu_admissions_per_million
+) select column1,
+    column2,
+    column3,
+    column4,
+    column5,
+    column6,
+    column7,
+    column8,
+    column9,
+    column10,
+    column11,
+    column12,
+    column13,
+    column14,
+    column15,
+    column16,
+    column17,
+    column18,
+    column19,
+    column20,
+    column21,
+    column22,
+    column23,
+    column24,
+    column25,
+    column26,
+    column27,
+    column28,
+    column29
+from CovidDeath2;
+
+
+
+
+select country,
+        date,
+        total_cases,
+        new_cases,
+        total_deaths,
+        population
+        
+from CovidDeath;
+
+
+
+
+--looking at total cases vs toatl deaths
+select total_cases ,
+        total_deaths,
+        (total_deaths / total_cases)*100 as percentage 
+from CovidDeath;
+
+
+
+
+-- Looking at total cases vs population
+-- show what percentage of France population got covid
+select country,
+        date,
+        total_cases ,
+        total_deaths,
+        population ,
+        (total_cases/population)*100 as percentage
+from CovidDeath
+where country like "%france%";
+
+
+
+
+
+
+--Looking at countries with highest infection rate compared to population
+
+select country,
+        --date,
+        max(total_cases ) as highestInfection,
+        total_deaths,
+        population ,
+        max((total_cases/population))*100 as percentage
+from CovidDeath
+--where country like "%france%"
+group by country,population
+order by highestInfection desc;
+
+
+
+
+
+--showing countries with highest death count per population
+select country,
+        max(total_deaths) as totalDeath,
+        population ,
+        (total_deaths/population)*100 as DeathsPerPopulation
+from CovidDeath
+where continent is not null
+group by country,population
+order by totalDeath desc;
+
+
+
+
+
+-- showing continent with highest death count per population
+
+select country,
+        max(total_deaths) as totalDeath,
+        population ,
+        (total_deaths/population)*100 as DeathsPerPopulation
+from CovidDeath
+where continent is null
+group by country
+order by totalDeath desc;
+
+
+
+
+-- global numbers
+
+SELECT
+       --date,
+       sum(total_cases) as TotalCases,
+      sum( total_deaths) as TotalDeaths,
+       (sum( total_deaths) / sum(total_cases)) * 100 AS DeathsPerCases
+FROM CovidDeath
+where continent is not null;
+--GROUP BY date
+--order by date;
+
+ 
+
+
+
+
+
+
+
+
+-- covid vaccinations
+
+select * from CovidVaccinations;
+
+-- create a temp table
+
+create temp table CV as select * from CovidVaccinations;
+
+-- create another CovidVaccinations table
+
+create table CovidVaccinations1(
+code    varchar(255),
+continent	    varchar(255),
+country	    varchar(255),
+date	varchar(255),
+total_cases    float,	
+total_tests    float,	
+new_tests	    float,
+total_tests_per_thousand    float,	
+new_tests_per_thousand	float,
+new_tests_smoothed	    float,
+new_tests_smoothed_per_thousand	float,
+positive_rate	float,
+tests_per_case	float,
+total_vaccinations	    float,
+people_vaccinated	    float,
+people_fully_vaccinated	float,
+total_boosters	float,
+new_vaccinations	float,
+new_vaccinations_smoothed	float,
+total_vaccinations_per_hundred	    float,
+people_vaccinated_per_hundred	    float,
+people_fully_vaccinated_per_hundred	float,
+total_boosters_per_hundred	    float,
+new_vaccinations_smoothed_per_million	    float,
+new_people_vaccinated_smoothed	            float,
+new_people_vaccinated_smoothed_per_hundred    float,				
+population_density	    float,
+median_age	        float,
+life_expectancy	float,
+gdp_per_capita	float,
+extreme_poverty	float,
+diabetes_prevalence	    float,
+handwashing_facilities	float,
+hospital_beds_per_thousand	    float,
+human_development_index        float
+);
+
+--insert the data from the temp table
+
+
+insert into CovidVaccinations1(
+code    ,
+continent	    ,
+country	    ,
+date	,
+total_cases    ,	
+total_tests    ,	
+new_tests	    ,
+total_tests_per_thousand    ,	
+new_tests_per_thousand	,
+new_tests_smoothed	    ,
+new_tests_smoothed_per_thousand	,
+positive_rate	,
+tests_per_case	,
+total_vaccinations	    ,
+people_vaccinated	    ,
+people_fully_vaccinated	,
+total_boosters	,
+new_vaccinations	,
+new_vaccinations_smoothed	,
+total_vaccinations_per_hundred	    ,
+people_vaccinated_per_hundred	    ,
+people_fully_vaccinated_per_hundred	,
+total_boosters_per_hundred	    ,
+new_vaccinations_smoothed_per_million	    ,
+new_people_vaccinated_smoothed	            ,
+new_people_vaccinated_smoothed_per_hundred    ,				
+population_density	    ,
+median_age	        ,
+life_expectancy	,
+gdp_per_capita	,
+extreme_poverty	,
+diabetes_prevalence	    ,
+handwashing_facilities	,
+hospital_beds_per_thousand	    ,
+human_development_index        
+)select column1,
+    column2,
+    column3,
+    column4,
+    column5,
+    column6,
+    column7,
+    column8,
+    column9,
+    column10,
+    column11,
+    column12,
+    column13,
+    column14,
+    column15,
+    column16,
+    column17,
+    column18,
+    column19,
+    column20,
+    column21,
+    column22,
+    column23,
+    column24,
+    column25,
+    column26,
+    column30,
+    column31,
+    column32,
+    column33,
+    column34,
+    column35,
+    column36,
+    column37,
+    column38
+from CV;
+
+
+
+
+
+
+
+-- Looking at total Population vs Vaccinations 
+-- using CTE 
+
+
+
+
+-- using temp table method
+drop table if exists PopvsVac2;
+create temp table PopvsVac2
+(
+continent         nvarchar(255),
+country        nvarchar(255),
+date        datetime,
+population        numeric,
+new_vaccinations        numeric,
+people_vaccinated        numeric
+);
+insert into PopvsVac2
+select cd.continent,cd.country,cd.date,cd.population,cv.new_vaccinations,
+sum(cv.new_vaccinations) over (partition by cd.country order by cd.country,
+cd.date) as people_vaccinated
+FROM CovidDeath     cd
+full JOIN CovidVaccinations1      cv
+ON cd.country = cv.country 
+AND cd.date = cv.date;
+
+
+
+
+
+
+
+--create a view
+
+create view PopvsVac as 
+select cd.continent,cd.country,cd.date,cd.population,cv.new_vaccinations,
+sum(cv.new_vaccinations) over (partition by cd.country order by cd.country,
+cd.date) as people_vaccinated
+FROM CovidDeath     cd
+full JOIN CovidVaccinations1      cv
+ON cd.country = cv.country 
+AND cd.date = cv.date
+where cd.continent is not null
