@@ -1,4 +1,6 @@
 select * from CovidDeath;
+
+-- creating a new CovidDeathh table for better visualisation 
 create table CovidDeath(
 code varchar(255),	
     continent varchar(255)	,
@@ -30,7 +32,7 @@ code varchar(255),
     weekly_icu_admissions		float,
     weekly_icu_admissions_per_million   	float
 );
-
+-- insert data into the new table 
 insert into CovidDeath(
     code,	
     continent,	
